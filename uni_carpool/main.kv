@@ -1,32 +1,35 @@
-MDScreen:
-    md_bg_color: [35/255, 59/255, 54/255, 1]
+<Manager>:
+    MainScreen:
+    LoginScreen:
+    SignupScreen:
+<LoginScreen>:
+    name:'loginscreen'
     MDCard:
-        size_hint: None, None
+        orientation:'vertical'
+        size_hint:None,None
         size:320, 400
-        pos_hint:{"center_x":.5, "center_y":.5}
-        elevation:15
-        md_bg_color:[35/255, 49/255, 48/255, 1]
-        padding: 30
-        spacing: 30
-        orientation: 'vertical'
-        ##Adding itemss to the card
+        pos_hint:{'center_x':.5, 'center_y':.5}
+        padding:15
+        spacing:10
         Image:
-            source:"assets//unicarpooltext.png"
+            source:'assets//unicarpooltext.png'
             halign:"center"
             size_hint_y: None
             height:self.texture_size[1]
             padding:20
             pos_hint:{"center_x":.5, "center_y":.5}
-            
         MDTextFieldRound:
+            id:login_email
             hint_text:"username"
             icon_right:"account"
             size_hint_x: None
             width: 220
             font_size:20
+            md_bg_color:[0/255, 0/255, 0/255, 1]
             color_active:[1,1,1,1]
             pos_hint:{"center_x":.5}
         MDTextFieldRound:
+            id:login_password
             hint_text:"password"
             icon_right:"eye-off"
             size_hint_x: None
@@ -47,56 +50,195 @@ MDScreen:
             font_name: 'SegoeUI'
             font_style:"Subtitle1"
             color:[245/255, 149/255, 35/255, 1]
-        MDRoundFlatButton:
-            text:"submit"
-            pos_hint:{"center_x":.5}
-            font_size:15
+
+        MDRaisedButton:
+        
+            md_bg_color: app.theme_cls.primary_light
+            text:'Login'
+            pos_hint: {'center_x':0.5}
+            on_press:
+                app.login()
+                app.username_changer() 
+            
+        
         Widget:
             size_hint_y:None
-            height: 3                    
+            height: 3                   
 
+<SignupScreen>:
+    name:'signupscreen'
+    MDLabel:
+        text:'Signup'
+        font_style:'H2'
+        halign:'center'
+        pos_hint: {'center_y':0.9}
 
-# <RegGrid>
-#     firstName:firstName
-#     lastName:lastName
-#     email:email
-#     password:password
+    MDTextField:
+        id:signup_email
+        pos_hint: {'center_y':0.6,'center_x':0.5}
+        size_hint : (0.7,0.1)
+        hint_text: 'Email'
+        helper_text:'Required'
+        helper_text_mode:  'on_error'
+        icon_right: 'account'
+        icon_right_color: app.theme_cls.primary_color
+        required: True
+        mode: "rectangle"
+    MDTextField:
+        id:signup_username
+        pos_hint: {'center_y':0.75,'center_x':0.5}
+        size_hint : (0.7,0.1)
+        hint_text: 'Username'
+        helper_text:'Required'
+        helper_text_mode:  'on_error'
+        icon_right: 'account'
+        icon_right_color: app.theme_cls.primary_color
+        required: True
+    MDTextField:
+        id:signup_password
+        pos_hint: {'center_y':0.4,'center_x':0.5}
+        size_hint : (0.7,0.1)
+        hint_text: 'Password'
+        helper_text:'Required'
+        helper_text_mode:  'on_error'
+        icon_right: 'account'
+        icon_right_color: app.theme_cls.primary_color
+        required: True
+        mode: "rectangle"
+    MDRaisedButton:
+        text:'Signup'
+        size_hint: (0.13,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.2}
+        on_press: app.signup()
+
+    MDTextButton:
+        text: 'Already have an account'
+        pos_hint: {'center_x':0.5,'center_y':0.1}
+        on_press:
+            root.manager.current = 'loginscreen'
+            root.manager.transition.direction = 'down'
+
     
-#     GridLayout:
-#         cols:1
-#         size: root.width, root.height
 
-
-#         GridLayout:
-#             cols:2
-
-#             Label:
-#                 text:'firstName'
-
-#             TextInput:
-#                 id:firstName
-#                 multiline:False
-#             Label:
-#                 text:'lastName'
-
-#             TextInput:
-#                 id:lastName
-#                 multiline:False   
-#             Label:
-#                 text:'email'
-
-#             TextInput:
-#                 id:email
-#                 multiline:False            
-#             Label:
-#                 text:'password'
-
-#             TextInput:
-#                 id:password
-#                 multiline:False               
+    
+<MainScreen>:
+    name: 'mainscreen'
+    MDLabel:
+        id:username_info
+        text:'Hello Main'
+        font_style:'H1'
+        halign:'center'
         
-#     Button:
-#         text: "Submit"
-#         color:"Black"
-#         font_size: 32
-#         on_press: root.press
+    MDTextButton:
+        text:'Login'
+        on_press:
+            root.manager.current='loginscreen'
+
+
+
+
+# MDScreen:
+#     md_bg_color: [35/255, 59/255, 54/255, 1]
+#     MDCard:
+#         size_hint: None, None
+#         size:320, 400
+#         pos_hint:{"center_x":.5, "center_y":.5}
+#         elevation:15
+        
+#         padding: 30
+#         spacing: 30
+#         orientation: 'vertical'
+#         ##Adding itemss to the card
+#         Image:
+#             source:"assets//unicarpooltext.png"
+#             halign:"center"
+#             size_hint_y: None
+#             height:self.texture_size[1]
+#             padding:20
+#             pos_hint:{"center_x":.5, "center_y":.5}
+            
+#         MDTextFieldRound:
+#             hint_text:"username"
+#             icon_right:"account"
+#             size_hint_x: None
+#             width: 220
+#             font_size:20
+#             md_bg_color:[0/255, 0/255, 0/255, 1]
+#             color_active:[1,1,1,1]
+#             pos_hint:{"center_x":.5}
+#         MDTextFieldRound:
+#             hint_text:"password"
+#             icon_right:"eye-off"
+#             size_hint_x: None
+#             width: 220
+#             font_size:20
+#             pos_hint:{"center_x":.5}
+#         MDLabel:
+#             text: "Forget Password?"
+#             # on_press:()
+#             font_size: 16
+#             font_name: 'SegoeUI'
+#             font_style:"Subtitle1"
+#             color:[245/255, 149/255, 35/255, 1]
+#         MDLabel:
+#             text: "Don't have an account? Sign up"
+#             # on_press:()
+#             font_size: 16
+#             font_name: 'SegoeUI'
+#             font_style:"Subtitle1"
+#             color:[245/255, 149/255, 35/255, 1]
+#         MDRaisedButton:
+#             md_bg_color: app.theme_cls.primary_light
+#             # background_color:[254/255, 149/255, 35/255, 1]
+#             text:"submit"
+#             pos_hint:{"center_x":.5}
+#             font_size:15
+#         Widget:
+#             size_hint_y:None
+#             height: 3                    
+
+
+# # <RegGrid>
+# #     firstName:firstName
+# #     lastName:lastName
+# #     email:email
+# #     password:password
+    
+# #     GridLayout:
+# #         cols:1
+# #         size: root.width, root.height
+
+
+# #         GridLayout:
+# #             cols:2
+
+# #             Label:
+# #                 text:'firstName'
+
+# #             TextInput:
+# #                 id:firstName
+# #                 multiline:False
+# #             Label:
+# #                 text:'lastName'
+
+# #             TextInput:
+# #                 id:lastName
+# #                 multiline:False   
+# #             Label:
+# #                 text:'email'
+
+# #             TextInput:
+# #                 id:email
+# #                 multiline:False            
+# #             Label:
+# #                 text:'password'
+
+# #             TextInput:
+# #                 id:password
+# #                 multiline:False               
+        
+# #     Button:
+# #         text: "Submit"
+# #         color:"Black"
+# #         font_size: 32
+# #         on_press: root.press
