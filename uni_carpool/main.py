@@ -26,7 +26,8 @@ ScreenManager:
         id:radio_user
         # active: True
         pos_hint: {'center_x': .4, 'center_y': .9}
-        on_active:app.role="user"  
+        on_active:app.role="user"
+        text:"User"  
     Check:
         id:radio_driver
         pos_hint: {'center_x': .6, 'center_y': .9}
@@ -137,7 +138,7 @@ ScreenManager:
         pos_hint:{"center_x":.5, "center_y":0.5}
     MDTextField:
         id:user_phone
-        hint_text:"Mobile number"
+        hint_text:"Mobile number, Will be a username "
         # icon_right:"account"
         size_hint_x: None
         width: 220
@@ -210,7 +211,7 @@ class LoginApp(MDApp):
     def build(self):
         
         # self.theme_cls.primary_light='Lime'
-        self.strng = Builder.load_string(help_str)
+        self.strng = Builder.load_file("main.kv")
         return self.strng
     
     
@@ -235,19 +236,19 @@ class LoginApp(MDApp):
         signupRePassword = self.strng.get_screen('signupscreen').ids.user_repassword.text
         signupPhone = self.strng.get_screen('signupscreen').ids.user_phone.text
         if signupEmail.split() == [] or signupPassword.split() == [] or signupPhone.split() == []:
-            self.dialog = MDDialog(title = 'Invalid Input',text = 'Please Enter a valid Input',size_hint = (0.7,0.2))
+            self.dialog = MDDialog(title = 'Invalid Input',text = 'Please fill all fileds ',size_hint = (0.7,0.2))
             self.dialog.open()
-        if signupEmail!= signupReEmail:
+        if signupEmail != signupReEmail:
             self.dialog = MDDialog(title = 'Invalid Input',text = 'Please confirm the email and confirm email are equal',size_hint = (0.7,0.2))
             self.dialog.open()
             
-        if signupPassword!= signupRePassword:
+        if signupPassword != signupRePassword:
             self.dialog = MDDialog(title = 'Invalid Input',text = 'Please confirm the password and confirm password are equal',size_hint = (0.7,0.2))
             self.dialog.open()
             
         else:
             try:
-                self.cursor.execute(f"insert into user values('{signupEmail}', '{signupPassword}', '{signupPhone}')")
+                self.cursor.execute(f"insert into user values('{signupPhone}','{signupEmail}', '{signupPassword}', 'user')")
                 self.database.commit()
                 self.strng.get_screen('signupscreen').ids.user_email.text=""
                 self.strng.get_screen('signupscreen').ids.user_reemail.text=""
