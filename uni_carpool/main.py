@@ -12,67 +12,87 @@ ScreenManager:
     MainScreen:
     LoginScreen:
     SignupScreen:
-<LoginScreen>:
-    name:'loginscreen'
-    MDCard:
-        orientation:'vertical'
-        size_hint:None,None
-        size:320, 400
-        pos_hint:{'center_x':.5, 'center_y':.5}
-        padding:15
-        spacing:10
-        Image:
-            source:'assets//unicarpooltext.png'
-            halign:"center"
-            size_hint_y: None
-            height:self.texture_size[1]
-            padding:20
-            pos_hint:{"center_x":.5, "center_y":.5}
-        MDTextFieldRound:
-            id:login_email
-            hint_text:"username"
-            icon_right:"account"
-            size_hint_x: None
-            width: 220
-            font_size:20
-            md_bg_color:[0/255, 0/255, 0/255, 1]
-            color_active:[1,1,1,1]
-            pos_hint:{"center_x":.5}
-        MDTextFieldRound:
-            id:login_password
-            hint_text:"password"
-            icon_right:"eye-off"
-            size_hint_x: None
-            width: 220
-            font_size:20
-            pos_hint:{"center_x":.5}
-        MDLabel:
-            text: "Forget Password?"
-            # on_press:()
-            font_size: 16
-            font_name: 'SegoeUI'
-            font_style:"Subtitle1"
-            color:[245/255, 149/255, 35/255, 1]
-        MDLabel:
-            text: "Don't have an account? Sign up"
-            # on_press:()
-            font_size: 16
-            font_name: 'SegoeUI'
-            font_style:"Subtitle1"
-            color:[245/255, 149/255, 35/255, 1]
 
-        MDRaisedButton:
-            md_bg_color: app.theme_cls.primary_light
-            text:'Login'
-            pos_hint: {'center_x':0.5}
-            on_press:
-                app.login()
-                # app.username_changer() 
-            
+<Check@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48)
+
+<LoginScreen>:
+
+    name:'loginscreen'
+
+    Check:
+        id:radio_user
+        # active: True
+        pos_hint: {'center_x': .4, 'center_y': .9}
+        on_active:app.role="user"  
+    Check:
+        id:radio_driver
+        pos_hint: {'center_x': .6, 'center_y': .9}
+        on_active:app.role="driver"  
+
+    # MDCheckbox:
+    #     on_active: app.on_checkbox_active(*args)
+    #     # size_hint=None,None
+    #     # size: "48dp", "48dp"
+    #     # pos_hint:{'center_x':.5, 'center_y':.5}
+    Image:
+        source:'assets//unicarpooltext.png'
+        halign:"center"
+        size_hint_y: None
+        height:self.texture_size[1]
+        padding:20
+        pos_hint:{"center_x":.5, "center_y":.8}
+    MDTextFieldRound:
+        id:login_email
+        hint_text:"username"
+        icon_right:"account"
+        size_hint_x: None
+        width: 220
+        font_size:20
+        md_bg_color:[0/255, 0/255, 0/255, 1]
+        color_active:[1,1,1,1]
+        pos_hint:{"center_x":.5, "center_y":0.7}
+    MDTextFieldRound:
+        id:login_password
+        hint_text:"password"
+        icon_right:"eye-off"
+        size_hint_x: None
+        width: 220
+        font_size:20
+        pos_hint:{"center_x":.5, "center_y":0.6}
+    MDLabel:
+        halign: "center"
+        pos_hint:{"center_x":0.5, "center_y":0.5}
+        text: "Forget Password?"
+        # on_press:()
+        font_size: 16
+        font_name: 'SegoeUI'
+        font_style:"Subtitle1"
+        color:[245/255, 149/255, 35/255, 1]
+    MDLabel:
+        halign: "center"
+        pos_hint:{"center_x":0.5, "center_y":0.4}
+        text: "Don't have an account? Sign up"
+        # on_press:()
+        font_size: 16
+        font_name: 'SegoeUI'
+        font_style:"Subtitle1"
+        color:[245/255, 149/255, 35/255, 1]
+
+    MDRaisedButton:
+        md_bg_color: app.theme_cls.primary_light
+        text:'Login'
+        pos_hint: {'center_x':0.5, "center_y":0.3}
+        on_press:
+            app.login()
+            # app.username_changer() 
         
-        Widget:
-            size_hint_y:None
-            height: 3                   
+    
+    Widget:
+        size_hint_y:None
+        height: 3                   
 
 <SignupScreen>:
     name:'signupscreen'
@@ -142,6 +162,14 @@ ScreenManager:
     
 <MainScreen>:
     name: 'mainscreen'
+    Image:
+        source:'assets//unicarpooltext.png'
+        halign:"center"
+        size_hint_y: None
+        height:self.texture_size[1]
+        padding:20
+        pos_hint:{"center_x":.5, "center_y":.9}
+    
     MDRaisedButton:
         pos_hint: {'center_x':0.5,'center_y':0.5}
 
@@ -173,16 +201,33 @@ sm.add_widget(SignupScreen(name = 'signupscreen'))
 
 
 class LoginApp(MDApp):
-    database=mysql.connector.Connect(host='localhost', user="root", password="root", database="unicarpool")
+    role=""
+    database=mysql.connector.Connect(host='localhost', user="root", passwd="root", database="unicarpool")
     cursor=database.cursor(buffered=True)
-    cursor.execute("select * from user")
+    cursor.execute("select * from unicarpool.user")
+    
         
     def build(self):
         
         # self.theme_cls.primary_light='Lime'
         self.strng = Builder.load_string(help_str)
         return self.strng
+    
+    
 
+    # def on_active_user(self,CheckBox,active):
+    #     if active:
+    #         self.role="user"
+    #     else:
+    #         self.role=""
+        
+    # def on_active_driver(self,CheckBox,active):
+    #     if active:
+    #         self.role="driver"
+    #     else:
+    #         self.role=""
+    
+        
     def signup(self):
         signupEmail = self.strng.get_screen('signupscreen').ids.user_email.text
         signupReEmail = self.strng.get_screen('signupscreen').ids.user_reemail.text
@@ -214,25 +259,40 @@ class LoginApp(MDApp):
                 
         
     def login(self):
+        
         loginEmail = self.strng.get_screen('loginscreen').ids.login_email.text
         loginPassword = self.strng.get_screen('loginscreen').ids.login_password.text
-        check=False
-        
-        self.cursor.execute("select * fom user")
-        email_list=[]
-        for i in self.cursor.fetchall():
-            email_list.append(i[0])
-        if loginEmail in email_list and loginEmail!="":
-            self.cursor.execute(f"select password from user where emai='{loginEmail}'")
-            for j in self.cursor:
-                if loginPassword==j[0]:
-                    self.dialog=MDDialog(
-                text="Sucessfull Login"
-                        )
-                    self.dialog.open()
-                else :
-                    self.dialog=MDDialog(text="Unsecuccsfull login ")
-                    self.dialog.open()
-                    print("user no longer exists")
-
+        if self.role=='user':
+            if loginEmail == "":
+                self.dialog=MDDialog(text="Enter username please")
+                self.dialog.open()
+            elif loginPassword=="":
+                self.dialog=MDDialog(text="Enter Password please")
+                self.dialog.open()
+            
+            self.cursor.execute("select * from user")
+            email_list=[]
+            for i in self.cursor.fetchall():
+                email_list.append(i[0])
+            if loginEmail in email_list:
+                self.cursor.execute(f'select password from user where name="{loginEmail}"')
+                for j in self.cursor:
+                    if loginPassword==j[0]:
+                        self.dialog=MDDialog(
+                    text="Sucessfull Login"
+                            )
+                        self.dialog.open()
+                    else:
+                        self.dialog=MDDialog(text="Unsecuccsfull login ")
+                        self.dialog.open()
+                        print("user no longer exists")
+        elif self.role=='driver':
+            self.dialog=MDDialog(text="Sorry the driver is not available yet/ login as user just")
+            self.dialog.open()
+            
+        else:
+            self.dialog=MDDialog(text="You should choose the role")
+            self.dialog.open()
+            
+            
 LoginApp().run()
